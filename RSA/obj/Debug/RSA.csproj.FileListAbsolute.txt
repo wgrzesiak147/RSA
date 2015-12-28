@@ -4,3 +4,4 @@ C:\GIT\rsa\RSA\RSA\bin\Debug\RSA.exe
 C:\GIT\rsa\RSA\RSA\bin\Debug\RSA.pdb
 C:\GIT\rsa\RSA\RSA\obj\Debug\RSA.exe
 C:\GIT\rsa\RSA\RSA\obj\Debug\RSA.pdb
+C:\GIT\rsa\RSA\RSA\obj\Debug\RSA.csprojResolveAssemblyReference.cache

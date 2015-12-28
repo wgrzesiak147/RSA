@@ -13,8 +13,7 @@ namespace RSA
         public int Size;
         public int[][] CurrentTopology;
 
-        public bool LoadTopology(string path)
-        {
+        public bool LoadTopology(string path){
             int counter = 0;
             string line;
             try
@@ -39,7 +38,6 @@ namespace RSA
                     }
                     else
                     {
-                       
                         CurrentTopology[counter - 2] = line.Split('\t').Select(Int32.Parse).ToArray();
                     }
                     counter++;
@@ -47,15 +45,14 @@ namespace RSA
                 file.Close();
                 return true;
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
                 return false;
                 throw;
             }
         }
 
-        private void InitializeTopology(int size)
-        {
+        private void InitializeTopology(int size){
             CurrentTopology = new int[size][];
 
             for (int i = 0; i < size; i++)

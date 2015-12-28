@@ -11,9 +11,13 @@ namespace RSA
     {
         public int RoutesQuantity;
         public List<RoutesBetweenNodesPair> RoutesBetweenNodesPairsCollection = new List<RoutesBetweenNodesPair>();
-
-        public bool LoadRoutes(string path)
-        {
+       
+        /// <summary>
+        /// Loading routes from file
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public bool LoadRoutes(string path){
             int counter = 0;
             int endNodeNumber = 0;
             string line;
@@ -49,7 +53,8 @@ namespace RSA
                             routesForNodes =
                                 RoutesBetweenNodesPairsCollection.FirstOrDefault(
                                     x => x.StartNodeNumber == 0 && x.EndNodeNumber == endNodeNumber);
-                            routesForNodes.RoutesCollection.Add(currentRoute);
+
+                            routesForNodes?.RoutesCollection.Add(currentRoute);
                         }
                     }
                     counter++;
@@ -70,8 +75,62 @@ namespace RSA
             }
         }
 
-        private Route CalculateRouteFromBinary(List<int> coll)
-        {
+        /// <summary>
+        /// Load the slots from file. Must be executed after LoadRoutes method
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public bool LoadSlots(string path){
+
+            int counter = 0;
+            int endNodeNumber = 0;
+            string line;
+            try
+            {
+                // Read the file and display it line by line.
+                StreamReader file = new StreamReader(path);
+                while ((line = file.ReadLine()) != null)
+                {
+                  
+                        List<int> currentSlotList = line.Split('\t').Select(Int32.Parse).ToList();
+                    
+                        var routesForNodes =
+                            RoutesBetweenNodesPairsCollection.FirstOrDefault(
+                                x => x.StartNodeNumber == 0 && x.EndNodeNumber == endNodeNumber);
+
+                        if (routesForNodes != null)
+                        {
+                            routesForNodes.RoutesCollection.ElementAt(counter).SlotsList = currentSlotList;
+                        }
+                        else
+                        {
+                            throw new Exception("You have to Load routes first!");
+                        }
+                   
+                    
+                    counter++;
+
+                    if (counter == 30)
+                    {
+                        counter = 0;
+                        endNodeNumber++;
+                    }
+                }
+                file.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+                throw;
+            }
+
+
+        }
+
+   
+
+        private Route CalculateRouteFromBinary(List<int> coll){
             List<int> result = new List<int>();
             int counter = 0;
             foreach (var element in coll)
@@ -84,8 +143,7 @@ namespace RSA
             return new Route(result);
         }
 
-        public List<RoutesBetweenNodesPair> GetRoutesBetweenNodes(int startNode, int endNode)
-        {
+        public List<RoutesBetweenNodesPair> GetRoutesBetweenNodes(int startNode, int endNode){
             List<RoutesBetweenNodesPair> coll = new List<RoutesBetweenNodesPair>();
             if (RoutesBetweenNodesPairsCollection != null && RoutesBetweenNodesPairsCollection.Any())
             {
