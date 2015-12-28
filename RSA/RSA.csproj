@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoutesBetweenNodesPair.cs" />
+    <Compile Include="RoutesManager.cs" />
     <Compile Include="Topology.cs" />
   </ItemGroup>
   <ItemGroup>
