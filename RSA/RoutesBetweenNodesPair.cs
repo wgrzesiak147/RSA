@@ -9,8 +9,7 @@ namespace RSA
     /// <summary>
     /// Storing the list of routes for every node pair
     /// </summary>
-    public class RoutesBetweenNodesPair{
-
+    public class RoutesBetweenNodesPair {
         public int StartNodeNumber;
         public int EndNodeNumber;
         public List<Route> RoutesCollection;
@@ -25,13 +24,11 @@ namespace RSA
     /// <summary>
     /// Storing the Route(NodeList) and Spectrum slots(SlotsList) 
     /// </summary>
-    public class Route{
-
+    public class Route {
         public List<int> NodeList;
         public List<int> SlotsList; 
 
-        public Route(List<int> nodeList){
-
+        public Route(List<int> nodeList) {
             NodeList = nodeList;
         }
     }

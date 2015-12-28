@@ -13,50 +13,37 @@ namespace RSA
         public int Size;
         public int[][] CurrentTopology;
 
-        public bool LoadTopology(string path){
+        public bool LoadTopology(string path) {
             int counter = 0;
             string line;
-            try
-            {
+            try {
                 // Read the file and display it line by line.
                 StreamReader file = new StreamReader(path);
-                while ((line = file.ReadLine()) != null)
-                {
-                    if (counter == 0)
-                    {
+                while ((line = file.ReadLine()) != null) {
+                    if (counter == 0) {
                         int size = 0;
                         Int32.TryParse(line, out size);
-
-                        if (size == 0)
+                        if (size == 0) {
                             throw new Exception("Size must be higher than 0!");
-
+                        }
                         InitializeTopology(size);
                     }
-                    else if (counter == 1)
-                    {
-                        Int32.TryParse(line, out Edges);
-                    }
-                    else
-                    {
-                        CurrentTopology[counter - 2] = line.Split('\t').Select(Int32.Parse).ToArray();
-                    }
+                    else if (counter == 1) { Int32.TryParse(line, out Edges); }
+                    else { CurrentTopology[counter - 2] = line.Split('\t').Select(Int32.Parse).ToArray(); }
                     counter++;
                 }
                 file.Close();
                 return true;
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 return false;
-                throw;
+                // throw; - to nigdy nie zostanie osiągnięte. Albo chcesz w tym momencie zrobić throw, albo chcesz zwrócić false
             }
         }
 
-        private void InitializeTopology(int size){
+        private void InitializeTopology(int size) {
             CurrentTopology = new int[size][];
-
-            for (int i = 0; i < size; i++)
-            {
+            for (int i = 0; i < size; i++) {
                 CurrentTopology[i] = new int[size];
             }
         }

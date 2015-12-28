@@ -8,15 +8,21 @@ namespace RSA
 {
     class Program
     {
-        static void Main(string[] args) { 
+        public static string sTopologyFile =
+            @"C:\Users\wgrzesiak147\Downloads\RSA_any_uni_dane\RSA any uni dane\DT14 1.75 Tbps\dd.net";
+        public static string sRoutesFile =
+            @"C:\Users\wgrzesiak147\Downloads\RSA_any_uni_dane\RSA any uni dane\DT14 1.75 Tbps\d.PAT";
+        public static string sSlotsFile =
+            @"C:\Users\wgrzesiak147\Downloads\RSA_any_uni_dane\RSA any uni dane\DT14 1.75 Tbps\d1.spec";
 
+        static void Main(string[] args) { 
             Topology top = new Topology();
-            top.LoadTopology(@"C:\Users\wgrzesiak147\Downloads\RSA_any_uni_dane\RSA any uni dane\DT14 1.75 Tbps\dd.net");
+            top.LoadTopology(sTopologyFile);
 
             // LoardRoutes method have to be executed before LoadSlots method!
             RoutesManager man = new RoutesManager();
-            man.LoadRoutes(@"C:\Users\wgrzesiak147\Downloads\RSA_any_uni_dane\RSA any uni dane\DT14 1.75 Tbps\d.PAT");
-            man.LoadSlots(@"C:\Users\wgrzesiak147\Downloads\RSA_any_uni_dane\RSA any uni dane\DT14 1.75 Tbps\d1.spec");
+            man.LoadRoutes(sRoutesFile);
+            man.LoadSlots(sSlotsFile);
 
         }
     }
