@@ -13,22 +13,18 @@ namespace RSA
        public List<Request> CurrentRequestList = new List<Request>();
        public int RequestQuantity;
 
-       public bool LoadRequests(string path){
+       public bool LoadRequests(string path) {
             int counter = 0;
             string line;
             try
             {
                 // Read the file and display it line by line.
-                using (StreamReader file = new StreamReader(path))
-                {
-                    while ((line = file.ReadLine()) != null)
-                    {
-                        if (counter ==0)
-                        {
+                using (StreamReader file = new StreamReader(path)) {
+                    while ((line = file.ReadLine()) != null) {
+                        if (counter ==0) {
                             Int32.TryParse(line, out RequestQuantity);
                         }
-                        else
-                        {
+                        else {
                             Request req = GetRequestFromRow(line);
                             CurrentRequestList.Add(req);
                         }
@@ -39,13 +35,11 @@ namespace RSA
                
                 return true;
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 return false;
                
             }
-
-
+            
         }
 
        private Request GetRequestFromRow(string line){

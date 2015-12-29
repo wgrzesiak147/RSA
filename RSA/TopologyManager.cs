@@ -14,14 +14,11 @@ namespace RSA
         public bool LoadTopology(string path){
             int counter = 0;
             string line;
-            try
-            {
+            try {
                 // Read the file and display it line by line.
                 StreamReader file = new StreamReader(path);
-                while ((line = file.ReadLine()) != null)
-                {
-                    if (counter == 0)
-                    {
+                while ((line = file.ReadLine()) != null) {
+                    if (counter == 0) {
                         int size = 0;
                         Int32.TryParse(line, out size);
 
@@ -30,12 +27,10 @@ namespace RSA
 
                         InitializeTopology(size);
                     }
-                    else if (counter == 1)
-                    {
+                    else if (counter == 1){
                         Int32.TryParse(line, out CurrentTopology.Edges);
                     }
-                    else
-                    {
+                    else {
                         CurrentTopology.CurrentTopology[counter - 2] = line.Split('\t').Select(Int32.Parse).ToArray();
                     }
                     counter++;
@@ -43,8 +38,7 @@ namespace RSA
                 file.Close();
                 return true;
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 return false;
                
             }
@@ -53,8 +47,7 @@ namespace RSA
         private void InitializeTopology(int size){
             CurrentTopology.CurrentTopology = new int[size][];
 
-            for (int i = 0; i < size; i++)
-            {
+            for (int i = 0; i < size; i++) {
                 CurrentTopology.CurrentTopology[i] = new int[size];
             }
         }

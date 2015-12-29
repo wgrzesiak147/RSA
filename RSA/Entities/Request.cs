@@ -12,8 +12,7 @@ namespace RSA
         public int EndNode { get; set; }
         public int Capacity { get; set; }
 
-        public Request(int startNode, int endNode, int capacity)
-        {
+        public Request(int startNode, int endNode, int capacity){
             StartNode = startNode;
             EndNode = endNode;
             Capacity = capacity;
