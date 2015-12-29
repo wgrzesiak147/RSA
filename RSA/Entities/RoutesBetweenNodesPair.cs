@@ -28,7 +28,7 @@ namespace RSA
     public class Route{
 
         public List<int> NodeList;
-        public List<int> SlotsList; 
+        public int[] SlotsList; 
 
         public Route(List<int> nodeList){
 

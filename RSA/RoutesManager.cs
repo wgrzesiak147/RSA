@@ -80,8 +80,9 @@ namespace RSA {
                 StreamReader file = new StreamReader(path);
                 while ((line = file.ReadLine()) != null) {
                   
-                        List<int> currentSlotList = line.Split('\t').Select(Int32.Parse).ToList();
-                    
+                        int[] currentSlotList = line.Split('\t').Select(Int32.Parse).ToArray(); // spliting line by '\t' and parsing every element to int. Then converting it to array
+
+                   
                         var routesForNodes =
                             RoutesBetweenNodesPairsCollection.FirstOrDefault(
                                 x => x.StartNodeNumber == 0 && x.EndNodeNumber == endNodeNumber);

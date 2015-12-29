@@ -13,6 +13,12 @@ namespace RSA
        public List<Request> CurrentRequestList = new List<Request>();
        public int RequestQuantity;
 
+
+        /// <summary>
+        /// Loading requests from file
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
        public bool LoadRequests(string path) {
             int counter = 0;
             string line;

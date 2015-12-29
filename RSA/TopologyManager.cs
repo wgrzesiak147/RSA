@@ -11,6 +11,12 @@ namespace RSA
 
         public Topology CurrentTopology = new Topology();
 
+
+        /// <summary>
+        /// Load Topology from file
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public bool LoadTopology(string path){
             int counter = 0;
             string line;
@@ -19,16 +25,16 @@ namespace RSA
                 StreamReader file = new StreamReader(path);
                 while ((line = file.ReadLine()) != null) {
                     if (counter == 0) {
-                        int size = 0;
-                        Int32.TryParse(line, out size);
+                        int size;
+                        Int32.TryParse(line, out size);  //parsing first line as a size of the topology
 
                         if (size == 0)
                             throw new Exception("Size must be higher than 0!");
 
-                        InitializeTopology(size);
+                        InitializeTopology(size);  // Initializing Topology(array) with size
                     }
                     else if (counter == 1){
-                        Int32.TryParse(line, out CurrentTopology.Edges);
+                        Int32.TryParse(line, out CurrentTopology.Edges);   //Parsing second line as edges value storend in CurentTopology object
                     }
                     else {
                         CurrentTopology.CurrentTopology[counter - 2] = line.Split('\t').Select(Int32.Parse).ToArray();
@@ -39,11 +45,14 @@ namespace RSA
                 return true;
             }
             catch (Exception ex) {
-                return false;
+                return false; // If there will be any error catched the method will return false. It will allow to check if its properly loaded or no
                
             }
         }
-
+        /// <summary>
+        /// Initializing array with topology
+        /// </summary>
+        /// <param name="size"></param>
         private void InitializeTopology(int size){
             CurrentTopology.CurrentTopology = new int[size][];
 

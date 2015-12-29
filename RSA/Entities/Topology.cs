@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace RSA
 {
     /// <summary>
-    /// 
+    /// Storing topology
     /// </summary>
     public class Topology
     {
