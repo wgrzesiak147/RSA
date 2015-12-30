@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace RSA
 {
@@ -31,7 +27,6 @@ namespace RSA
         public int[] SlotsList; 
 
         public Route(List<int> nodeList){
-
             NodeList = nodeList;
         }
     }
