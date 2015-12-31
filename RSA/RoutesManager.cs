@@ -134,5 +134,21 @@ namespace RSA {
             }
             return coll;
         }
+
+        /// <summary>
+        /// Load weights for current List<RoutesBetweenNodesPair>
+        /// </summary>
+        /// <param name="currentTopology"></param>
+        public void LoadWeights(Topology currentTopology)
+        {
+
+            int size = currentTopology.CurrentTopology.Length;
+
+            for (int i = 0; i < size - 1; i++)
+            {
+              //  RoutesBetweenNodesPairsCollection.FirstOrDefault(x => x.EndNodeNumber == i);
+
+            }
+        }
     }
 }

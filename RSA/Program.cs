@@ -22,7 +22,7 @@
             RoutesManager man = new RoutesManager();
             man.LoadRoutes(sRoutesFile);
             man.LoadSlots(sSlotsFile);
-
+            man.LoadWeights(top.CurrentTopology);
             RequestManager req = new RequestManager();
             req.LoadRequests(sRequestFile);
 

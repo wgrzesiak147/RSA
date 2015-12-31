@@ -10,6 +10,7 @@ namespace RSA
         public int StartNodeNumber;
         public int EndNodeNumber;
         public List<Route> RoutesCollection;
+       
 
         public RoutesBetweenNodesPair(int startNodeNumber, int endNodeNumber, List<Route> routesCollection){
             StartNodeNumber = startNodeNumber;

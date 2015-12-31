@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using RSA.Entities;
 
 namespace RSA
 {
     public class TopologyManager {
 
         public Topology CurrentTopology = new Topology();
-
+        public List<Connection> CurrentConnections = new List<Connection>(); 
 
         /// <summary>
         /// Load Topology from file
@@ -39,6 +41,7 @@ namespace RSA
                     counter++;
                 }
                 file.Close();
+                LoadConnections();
                 return true;
             }
             catch (Exception ex) {
@@ -46,6 +49,28 @@ namespace RSA
                
             }
         }
+
+        /// <summary>
+        /// Initializing list of connections
+        /// </summary>
+        private void LoadConnections()
+        {
+            int counter = 0;
+            int size = CurrentTopology.Size;
+     
+            for (int x = 0; x < size; x ++)
+            {
+                for (int y = 0; y < size; y ++)
+                {
+                    CurrentConnections.Add(new Connection(counter,x,y,CurrentTopology.CurrentTopology[x][y])); //adding new connection
+                    counter ++;
+                }
+
+            }
+
+
+        }
+
         /// <summary>
         /// Initializing array with topology
         /// </summary>
