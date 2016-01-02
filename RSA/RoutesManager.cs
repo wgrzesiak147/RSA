@@ -13,7 +13,10 @@ namespace RSA {
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public bool LoadRoutes(string path){
+        public bool LoadRoutes(string path)
+        {
+          
+           
             int counter = 0;
             int startNodeNumber = 0;
             int endNodeNumber = 1;

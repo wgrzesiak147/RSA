@@ -1,19 +1,23 @@
-﻿namespace RSA
+﻿using System;
+
+namespace RSA
 {
     class Program
     {
         static void Main(string[] args) {
 
+            string directoryPath = AppDomain.CurrentDomain.BaseDirectory;
 
-            
-            string sTopologyFile =
-                @"C:\Users\wgrzesiak147\Downloads\RSA_any_uni_dane\RSA any uni dane\DT14 1.75 Tbps\dd.net";
+            ////  string sTopologyFile =
+            // @"C:\Users\wgrzesiak147\Downloads\RSA_any_uni_dane\RSA any uni dane\DT14 1.75 Tbps\dd.net";
+            string sTopologyFile =directoryPath + 
+             @"Dane\dd.net";
             string sRoutesFile =
-                @"C:\Users\wgrzesiak147\Downloads\RSA_any_uni_dane\RSA any uni dane\DT14 1.75 Tbps\d.PAT";
+                @"Dane\d.PAT";
             string sSlotsFile =
-                @"C:\Users\wgrzesiak147\Downloads\RSA_any_uni_dane\RSA any uni dane\DT14 1.75 Tbps\d1.spec";
+                @"Dane\d1.spec";
             string sRequestFile =
-                @"C:\Users\wgrzesiak147\Downloads\RSA_any_uni_dane\RSA any uni dane\DT14 1.75 Tbps\51.dem";
+                @"Dane\51.dem";
 
             TopologyManager top = new TopologyManager();
             top.LoadTopology(sTopologyFile);
