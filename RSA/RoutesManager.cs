@@ -15,7 +15,8 @@ namespace RSA {
         /// <returns></returns>
         public bool LoadRoutes(string path){
             int counter = 0;
-            int endNodeNumber = 0;
+            int startNodeNumber = 0;
+            int endNodeNumber = 1;
             string line;
             try {
                 // Read the file and display it line by line.
@@ -31,27 +32,31 @@ namespace RSA {
 
                         var routesForNodes =
                             RoutesBetweenNodesPairsCollection.FirstOrDefault(
-                                x => x.StartNodeNumber == 0 && x.EndNodeNumber == endNodeNumber);
+                                x => x.StartNodeNumber == startNodeNumber && x.EndNodeNumber == endNodeNumber);
 
-                        if (routesForNodes != null) {
-                            routesForNodes.RoutesCollection.Add(currentRoute);
-                        }
-                        else {
-                            RoutesBetweenNodesPairsCollection.Add(new RoutesBetweenNodesPair(0, endNodeNumber,
+                        if (routesForNodes == null) {
+                            RoutesBetweenNodesPairsCollection.Add(new RoutesBetweenNodesPair(startNodeNumber, endNodeNumber,
                                 new List<Route>()));
 
                             routesForNodes =
                                 RoutesBetweenNodesPairsCollection.FirstOrDefault(
-                                    x => x.StartNodeNumber == 0 && x.EndNodeNumber == endNodeNumber);
+                                    x => x.StartNodeNumber == startNodeNumber && x.EndNodeNumber == endNodeNumber);
 
-                            routesForNodes?.RoutesCollection.Add(currentRoute);
-                        }
+                           }
+                        routesForNodes?.RoutesCollection.Add(currentRoute);
                     }
                     counter++;
 
-                    if (counter == 31) {
-                        counter = 1;
-                        endNodeNumber++;
+                    //TODO : TESTS!
+                    if (counter == 31) { //every 30 lines (1 because the first row is size)
+                        counter = 1;  //restarting counter
+                        endNodeNumber++; //increasing endNodeNumber
+                        if (endNodeNumber == 31){ //When endNodeNumber will be equal to 30
+                            startNodeNumber++; //increasing startNodeNumber
+                            endNodeNumber = 0; //restarting endNodeNumber
+                        }
+                        if (startNodeNumber == endNodeNumber) //When startNodeNumber equal to endNodeNumber
+                            endNodeNumber++; //increasing endNodeNumber
                     }
                 }
                 file.Close();
@@ -71,7 +76,8 @@ namespace RSA {
         public bool LoadSlots(string path) {
 
             int counter = 0;
-            int endNodeNumber = 0;
+            int startNodeNumber = 0;
+            int endNodeNumber = 1;
             string line;
             try {
                 // Read the file and display it line by line.
@@ -79,11 +85,10 @@ namespace RSA {
                 while ((line = file.ReadLine()) != null) {
                   
                         int[] currentSlotList = line.Split('\t').Select(Int32.Parse).ToArray(); // spliting line by '\t' and parsing every element to int. Then converting it to array
-
-                   
+                    
                         var routesForNodes =
                             RoutesBetweenNodesPairsCollection.FirstOrDefault(
-                                x => x.StartNodeNumber == 0 && x.EndNodeNumber == endNodeNumber);
+                                x => x.StartNodeNumber ==startNodeNumber && x.EndNodeNumber == endNodeNumber);
 
                         if (routesForNodes != null) {
                             routesForNodes.RoutesCollection.ElementAt(counter).SlotsList = currentSlotList;
@@ -95,9 +100,16 @@ namespace RSA {
                     
                     counter++;
 
-                    if (counter == 30) {
-                        counter = 0;
-                        endNodeNumber++;
+                    if (counter == 30){ 
+                        counter = 0;  
+                        endNodeNumber++; 
+                        if (endNodeNumber == 31)
+                        { 
+                            startNodeNumber++; 
+                            endNodeNumber = 0; 
+                        }
+                        if (startNodeNumber == endNodeNumber) 
+                            endNodeNumber++; 
                     }
                 }
                 file.Close();
