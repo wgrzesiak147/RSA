@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RSA.Entities;
 
 namespace RSA
 {
@@ -16,19 +17,6 @@ namespace RSA
             StartNodeNumber = startNodeNumber;
             EndNodeNumber = endNodeNumber;
             RoutesCollection = routesCollection;
-        }
-    }
-
-    /// <summary>
-    /// Storing the Route(NodeList) and Spectrum slots(SlotsList) 
-    /// </summary>
-    public class Route{
-
-        public List<int> NodeList;
-        public int[] SlotsList; 
-
-        public Route(List<int> nodeList){
-            NodeList = nodeList;
         }
     }
 

@@ -1,7 +1,9 @@
 ﻿namespace RSA
 {
-    public class Request{
+    public class Request
+    {
 
+        public int Id { get; set; }
         public int StartNode { get; set; }
         public int EndNode { get; set; }
         public int Capacity { get; set; }

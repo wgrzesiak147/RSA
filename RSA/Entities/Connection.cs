@@ -8,10 +8,13 @@ namespace RSA.Entities
 {
     public class Connection
     {
-        public int Id;
-        public int StartNode;
-        public int EndNode;
-        public int Weight;
+        public int Id { get; set; }
+        public int StartNode { get; set; }
+        public int EndNode { get; set; }
+        public int Weight { get; set; }
+        public int FreeSlotsNumber { get; set; }
+        public int TakenSlotsNumber { get; set; }
+        public int SlotsArray { get; set; }
 
         public Connection(int id, int startNode, int endNode, int weight)
         {
