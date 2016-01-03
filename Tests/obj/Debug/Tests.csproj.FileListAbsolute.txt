@@ -1,0 +1,6 @@
+C:\GIT\rsa\RSA\Tests\bin\Debug\Tests.dll
+C:\GIT\rsa\RSA\Tests\bin\Debug\Tests.pdb
+C:\GIT\rsa\RSA\Tests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\GIT\rsa\RSA\Tests\obj\Debug\Tests.csprojResolveAssemblyReference.cache
+C:\GIT\rsa\RSA\Tests\obj\Debug\Tests.dll
+C:\GIT\rsa\RSA\Tests\obj\Debug\Tests.pdb

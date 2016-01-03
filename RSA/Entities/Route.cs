@@ -11,13 +11,20 @@ namespace RSA.Entities
     /// </summary>
     public class Route{
 
+        public int Id { get; set; }
         public List<int> NodeList { get; set; }
         public int[] SlotsList { get; set; }
         public int StartNode { get; set; }
         public int EndNode { get; set; }
 
-        public Route(List<int> nodeList){
+        public List<Route> ChildsRoutes = new List<Route>();
+        public List<Route> ParentsRoutes = new List<Route>();
+        
+
+        public Route(List<int> nodeList,int startNode,int endNode){
             NodeList = nodeList;
+            StartNode = startNode;
+            EndNode = endNode;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using RSA.Entities;
+using RSA.Helpers;
 
 namespace RSA {
     public class RoutesManager {
@@ -30,21 +31,18 @@ namespace RSA {
                     else {
                         List<int> coll = line.Split(' ').Select(Int32.Parse).ToList();
 
-                        Route currentRoute = CalculateRouteFromBinary(coll);
+                        Route currentRoute = CalculateRouteFromBinary(coll,startNodeNumber,endNodeNumber);
 
-                        var routesForNodes =
-                            RoutesBetweenNodesPairsCollection.FirstOrDefault(
-                                x => x.StartNodeNumber == startNodeNumber && x.EndNodeNumber == endNodeNumber);
+                        var routesForNodes = GetRoutesBetweenNodes(startNodeNumber, endNodeNumber);
 
                         if (routesForNodes == null) {
                             RoutesBetweenNodesPairsCollection.Add(new RoutesBetweenNodesPair(startNodeNumber, endNodeNumber,
                                 new List<Route>()));
 
-                            routesForNodes =
-                                RoutesBetweenNodesPairsCollection.FirstOrDefault(
-                                    x => x.StartNodeNumber == startNodeNumber && x.EndNodeNumber == endNodeNumber);
+                            routesForNodes = GetRoutesBetweenNodes(startNodeNumber, endNodeNumber);
 
-                           }
+                        }
+                        InitializeChildOrParents(currentRoute);
                         routesForNodes?.RoutesCollection.Add(currentRoute);
                     }
                     counter++;
@@ -52,13 +50,13 @@ namespace RSA {
                     //TODO : TESTS!
                     if (counter == 31) { //every 30 lines (1 because the first row is size)
                         counter = 1;  //restarting counter
-                        endNodeNumber++; //increasing endNodeNumber
-                        if (endNodeNumber == 31){ //When endNodeNumber will be equal to 30
-                            startNodeNumber++; //increasing startNodeNumber
-                            endNodeNumber = 0; //restarting endNodeNumber
+                        endNodeNumber++; //increasing endNode
+                        if (endNodeNumber == 31){ //When endNode will be equal to 30
+                            startNodeNumber++; //increasing startNode
+                            endNodeNumber = 0; //restarting endNode
                         }
-                        if (startNodeNumber == endNodeNumber) //When startNodeNumber equal to endNodeNumber
-                            endNodeNumber++; //increasing endNodeNumber
+                        if (startNodeNumber == endNodeNumber) //When startNode equal to endNode
+                            endNodeNumber++; //increasing endNode
                     }
                 }
                 file.Close();
@@ -66,8 +64,41 @@ namespace RSA {
             }
             catch (Exception ex) {
                 return false;
-                throw;
+                
             }
+        }
+
+        private void InitializeChildOrParents(Route currentRoute)
+        {
+            //RoutesBetweenNodesPair routesBetweenNodes = GetRoutesBetweenNodes(currentRoute.StartNode,
+            //    currentRoute.EndNode);
+
+            //if(routesBetweenNodes == null || routesBetweenNodes.RoutesCollection == null)
+            //    return;
+
+            foreach (var routesBetweenNodes in RoutesBetweenNodesPairsCollection) // for each nodePair
+            {
+                if (routesBetweenNodes == null || routesBetweenNodes.RoutesCollection == null) //if the pair exists and have some routes
+                    return;
+
+                List<Route> routeList = routesBetweenNodes.RoutesCollection;
+
+                foreach (var element in routeList) //for each route in each nodePair
+                {
+                    if (element.NodeList.ContainsSubsequence(currentRoute.NodeList)) //checking if the route is a parent or child
+                    {
+                        currentRoute.ParentsRoutes.Add(element);
+                        element.ChildsRoutes.Add(currentRoute);
+                    }
+                    else if (currentRoute.NodeList.ContainsSubsequence(element.NodeList))
+                    {
+                        currentRoute.ChildsRoutes.Add(element);
+                        element.ParentsRoutes.Add(currentRoute);
+                    }
+                }
+
+            }
+
         }
 
         /// <summary>
@@ -87,14 +118,12 @@ namespace RSA {
                 while ((line = file.ReadLine()) != null) {
                   
                         int[] currentSlotList = line.Split('\t').Select(Int32.Parse).ToArray(); // spliting line by '\t' and parsing every element to int. Then converting it to array
-                    
-                        var routesForNodes =
-                            RoutesBetweenNodesPairsCollection.FirstOrDefault(
-                                x => x.StartNodeNumber ==startNodeNumber && x.EndNodeNumber == endNodeNumber);
 
-                        if (routesForNodes != null) {
-                            routesForNodes.RoutesCollection.ElementAt(counter).SlotsList = currentSlotList;
-                        }
+                        var routesForNodes = GetRoutesBetweenNodes(startNodeNumber, endNodeNumber); //getting RoutesBetweenNodePair entity for current startNode and endNode
+
+                        if (routesForNodes != null) {   //checking if  RoutesBetweenNodePair entity exists
+                            routesForNodes.RoutesCollection.ElementAt(counter).SlotsList = currentSlotList; //if yes adding slots to RoutesBetweenNodePair current route
+                    }
                         else {
                             throw new Exception("You have to Load routes first!");
                         }
@@ -126,7 +155,7 @@ namespace RSA {
 
    
 
-        private Route CalculateRouteFromBinary(List<int> coll) {
+        private Route CalculateRouteFromBinary(List<int> coll,int startNode,int endNode) {
             List<int> result = new List<int>();
             int counter = 0;
             foreach (var element in coll)
@@ -136,33 +165,27 @@ namespace RSA {
                 counter++;
             }
 
-            return new Route(result);
-        }
-
-        public List<RoutesBetweenNodesPair> GetRoutesBetweenNodes(int startNode, int endNode){
-            List<RoutesBetweenNodesPair> coll = new List<RoutesBetweenNodesPair>();
-            if (RoutesBetweenNodesPairsCollection != null && RoutesBetweenNodesPairsCollection.Any()) {
-                coll =
-                    RoutesBetweenNodesPairsCollection.Where(
-                        x => x.StartNodeNumber == startNode && x.EndNodeNumber == endNode).ToList();
-            }
-            return coll;
+            return new Route(result,startNode,endNode);
         }
 
         /// <summary>
-        /// Load weights for current List<RoutesBetweenNodesPair>
+        /// Getting the RoutesBeweenNodePair entity with specified startNode and endNode from RoutesBetweenNodePairsCollection
         /// </summary>
-        /// <param name="currentTopology"></param>
-        public void LoadWeights(Topology currentTopology)
-        {
+        /// <param name="startNode"></param>
+        /// <param name="endNode"></param>
+        /// <returns></returns>
+        public RoutesBetweenNodesPair GetRoutesBetweenNodes(int startNode, int endNode){
 
-            int size = currentTopology.CurrentTopology.Length;
-
-            for (int i = 0; i < size - 1; i++)
+            if (RoutesBetweenNodesPairsCollection != null && RoutesBetweenNodesPairsCollection.Any())
             {
-              //  RoutesBetweenNodesPairsCollection.FirstOrDefault(x => x.EndNodeNumber == i);
-
+                RoutesBetweenNodesPair result = RoutesBetweenNodesPairsCollection.FirstOrDefault(
+                    x => x.StartNodeNumber == startNode && x.EndNodeNumber == endNode);
+                return result;
             }
+
+            return null;
         }
+
+     
     }
 }
