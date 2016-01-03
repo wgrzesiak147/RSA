@@ -11,7 +11,7 @@ namespace RSA {
         public List<RoutesBetweenNodesPair> RoutesBetweenNodesPairsCollection = new List<RoutesBetweenNodesPair>();
        
         /// <summary>
-        /// Loading routes from file
+        /// Loading routes from file and calculating parents and childs 
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -23,43 +23,53 @@ namespace RSA {
             string line;
             try {
                 // Read the file and display it line by line.
-                StreamReader file = new StreamReader(path);
-                while ((line = file.ReadLine()) != null) {
-                    if (counter == 0) {
-                        Int32.TryParse(line, out RoutesQuantity);
-                    }
-                    else {
-                        List<int> coll = line.Split(' ').Select(Int32.Parse).ToList();
+                using (StreamReader file = new StreamReader(path))
+                {
 
-                        Route currentRoute = CalculateRouteFromBinary(coll,startNodeNumber,endNodeNumber);
-
-                        var routesForNodes = GetRoutesBetweenNodes(startNodeNumber, endNodeNumber);
-
-                        if (routesForNodes == null) {
-                            RoutesBetweenNodesPairsCollection.Add(new RoutesBetweenNodesPair(startNodeNumber, endNodeNumber,
-                                new List<Route>()));
-
-                            routesForNodes = GetRoutesBetweenNodes(startNodeNumber, endNodeNumber);
-
+                    while ((line = file.ReadLine()) != null)
+                    {
+                        if (counter == 0)
+                        {
+                            Int32.TryParse(line, out RoutesQuantity);
                         }
-                        InitializeChildOrParents(currentRoute);
-                        routesForNodes?.RoutesCollection.Add(currentRoute);
-                    }
-                    counter++;
+                        else
+                        {
+                            List<int> coll = line.Split(' ').Select(Int32.Parse).ToList();
 
-                    //TODO : TESTS!
-                    if (counter == 31) { //every 30 lines (1 because the first row is size)
-                        counter = 1;  //restarting counter
-                        endNodeNumber++; //increasing endNode
-                        if (endNodeNumber == 31){ //When endNode will be equal to 30
-                            startNodeNumber++; //increasing startNode
-                            endNodeNumber = 0; //restarting endNode
+                            Route currentRoute = CalculateRouteFromBinary(coll, startNodeNumber, endNodeNumber);
+
+                            var routesForNodes = GetRoutesBetweenNodes(startNodeNumber, endNodeNumber);
+
+                            if (routesForNodes == null)
+                            {
+                                RoutesBetweenNodesPairsCollection.Add(new RoutesBetweenNodesPair(startNodeNumber,
+                                    endNodeNumber,
+                                    new List<Route>()));
+
+                                routesForNodes = GetRoutesBetweenNodes(startNodeNumber, endNodeNumber);
+
+                            }
+                            InitializeChildOrParents(currentRoute);
+                            routesForNodes?.RoutesCollection.Add(currentRoute);
                         }
-                        if (startNodeNumber == endNodeNumber) //When startNode equal to endNode
+                        counter++;
+
+                        if (counter == 31)
+                        {
+                            //every 30 lines (31 because the first row is size)
+                            counter = 1; //restarting counter
                             endNodeNumber++; //increasing endNode
+                            if (endNodeNumber == 31)
+                            {
+                                //When endNode will be equal to 30
+                                startNodeNumber++; //increasing startNode
+                                endNodeNumber = 0; //restarting endNode
+                            }
+                            if (startNodeNumber == endNodeNumber) //When startNode equal to endNode
+                                endNodeNumber++; //increasing endNode
+                        }
                     }
                 }
-                file.Close();
                 return true;
             }
             catch (Exception ex) {
@@ -68,19 +78,17 @@ namespace RSA {
             }
         }
 
-        private void InitializeChildOrParents(Route currentRoute)
-        {
-            //RoutesBetweenNodesPair routesBetweenNodes = GetRoutesBetweenNodes(currentRoute.StartNode,
-            //    currentRoute.EndNode);
-
-            //if(routesBetweenNodes == null || routesBetweenNodes.RoutesCollection == null)
-            //    return;
-
+        /// <summary>
+        /// Initializing childs and parents for any existing routes in routesCollection. It can take a while!
+        /// </summary>
+        /// <param name="currentRoute"></param>
+        private void InitializeChildOrParents(Route currentRoute){
+          
             foreach (var routesBetweenNodes in RoutesBetweenNodesPairsCollection) // for each nodePair
             {
                 if (routesBetweenNodes == null || routesBetweenNodes.RoutesCollection == null) //if the pair exists and have some routes
                     return;
-
+      
                 List<Route> routeList = routesBetweenNodes.RoutesCollection;
 
                 foreach (var element in routeList) //for each route in each nodePair
@@ -96,9 +104,7 @@ namespace RSA {
                         element.ParentsRoutes.Add(currentRoute);
                     }
                 }
-
             }
-
         }
 
         /// <summary>
@@ -114,36 +120,46 @@ namespace RSA {
             string line;
             try {
                 // Read the file and display it line by line.
-                StreamReader file = new StreamReader(path);
-                while ((line = file.ReadLine()) != null) {
-                  
-                        int[] currentSlotList = line.Split('\t').Select(Int32.Parse).ToArray(); // spliting line by '\t' and parsing every element to int. Then converting it to array
+                using (StreamReader file = new StreamReader(path))
+                {
 
-                        var routesForNodes = GetRoutesBetweenNodes(startNodeNumber, endNodeNumber); //getting RoutesBetweenNodePair entity for current startNode and endNode
+                    while ((line = file.ReadLine()) != null)
+                    {
 
-                        if (routesForNodes != null) {   //checking if  RoutesBetweenNodePair entity exists
-                            routesForNodes.RoutesCollection.ElementAt(counter).SlotsList = currentSlotList; //if yes adding slots to RoutesBetweenNodePair current route
-                    }
-                        else {
+                        int[] currentSlotList = line.Split('\t').Select(Int32.Parse).ToArray();
+                            // spliting line by '\t' and parsing every element to int. Then converting it to array
+
+                        var routesForNodes = GetRoutesBetweenNodes(startNodeNumber, endNodeNumber);
+                            //getting RoutesBetweenNodePair entity for current startNode and endNode
+
+                        if (routesForNodes != null)
+                        {
+                            //checking if  RoutesBetweenNodePair entity exists
+                            routesForNodes.RoutesCollection.ElementAt(counter).SlotsList = currentSlotList;
+                                //if yes adding slots to RoutesBetweenNodePair current route
+                        }
+                        else
+                        {
                             throw new Exception("You have to Load routes first!");
                         }
-                   
-                    
-                    counter++;
 
-                    if (counter == 30){ 
-                        counter = 0;  
-                        endNodeNumber++; 
-                        if (endNodeNumber == 31)
-                        { 
-                            startNodeNumber++; 
-                            endNodeNumber = 0; 
+
+                        counter++;
+
+                        if (counter == 30)
+                        {
+                            counter = 0;
+                            endNodeNumber++;
+                            if (endNodeNumber == 31)
+                            {
+                                startNodeNumber++;
+                                endNodeNumber = 0;
+                            }
+                            if (startNodeNumber == endNodeNumber)
+                                endNodeNumber++;
                         }
-                        if (startNodeNumber == endNodeNumber) 
-                            endNodeNumber++; 
                     }
                 }
-                file.Close();
                 return true;
             }
             catch (Exception ex) {
@@ -154,13 +170,19 @@ namespace RSA {
         }
 
    
-
+        /// <summary>
+        /// Converting binary list to Route
+        /// </summary>
+        /// <param name="coll"></param>
+        /// <param name="startNode"></param>
+        /// <param name="endNode"></param>
+        /// <returns></returns>
         private Route CalculateRouteFromBinary(List<int> coll,int startNode,int endNode) {
             List<int> result = new List<int>();
             int counter = 0;
             foreach (var element in coll)
             {
-                if (element == 1)
+                if (element == 1) //if element == 1 it means that this node is used in this route
                     result.Add(counter);
                 counter++;
             }
@@ -182,7 +204,6 @@ namespace RSA {
                     x => x.StartNodeNumber == startNode && x.EndNodeNumber == endNode);
                 return result;
             }
-
             return null;
         }
 

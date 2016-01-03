@@ -21,26 +21,34 @@ namespace RSA
             string line;
             try {
                 // Read the file and display it line by line.
-                StreamReader file = new StreamReader(path);
-                while ((line = file.ReadLine()) != null) {
-                    if (counter == 0) {
-                        int size;
-                        Int32.TryParse(line, out size);  //parsing first line as a size of the topology
+                using (StreamReader file = new StreamReader(path))
+                {
 
-                        if (size == 0)
-                            throw new Exception("Size must be higher than 0!");
+                    while ((line = file.ReadLine()) != null)
+                    {
+                        if (counter == 0)
+                        {
+                            int size;
+                            Int32.TryParse(line, out size); //parsing first line as a size of the topology
 
-                        InitializeTopology(size);  // Initializing Topology(array) with size
+                            if (size == 0)
+                                throw new Exception("Size must be higher than 0!");
+
+                            InitializeTopology(size); // Initializing Topology(array) with size
+                        }
+                        else if (counter == 1)
+                        {
+                            Int32.TryParse(line, out CurrentTopology.Edges);
+                                //Parsing second line as edges value storend in CurentTopology object
+                        }
+                        else
+                        {
+                            CurrentTopology.CurrentTopology[counter - 2] =
+                                line.Split('\t').Select(Int32.Parse).ToArray();
+                        }
+                        counter++;
                     }
-                    else if (counter == 1){
-                        Int32.TryParse(line, out CurrentTopology.Edges);   //Parsing second line as edges value storend in CurentTopology object
-                    }
-                    else {
-                        CurrentTopology.CurrentTopology[counter - 2] = line.Split('\t').Select(Int32.Parse).ToArray();
-                    }
-                    counter++;
                 }
-                file.Close();
                 LoadConnections();
                 return true;
             }
@@ -53,8 +61,7 @@ namespace RSA
         /// <summary>
         /// Initializing list of connections
         /// </summary>
-        private void LoadConnections()
-        {
+        private void LoadConnections(){
             int counter = 0;
             int size = CurrentTopology.Size;
      
