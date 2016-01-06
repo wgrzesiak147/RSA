@@ -8,7 +8,7 @@ namespace RSA.Entities
     public class Route{
 
         public int Index { get; set; }
-        public List<int> NodeList { get; set; }
+        public List<int> LinkList { get; set; }
         public int[] SlotsList { get; set; }
         public int StartNode { get; set; }
         public int EndNode { get; set; }
@@ -18,9 +18,9 @@ namespace RSA.Entities
         public List<Route> ParentsRoutes = new List<Route>();
         
 
-        public Route(int index, List<int> nodeList,int startNode,int endNode) {
+        public Route(int index, List<int> linkList,int startNode,int endNode) {
             Index = index;
-            NodeList = nodeList;
+            LinkList = linkList;
             StartNode = startNode;
             EndNode = endNode;
         }

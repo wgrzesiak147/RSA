@@ -168,7 +168,7 @@ namespace RSA {
             List<int> result = new List<int>();
             int counter = 0;
             foreach (var element in coll) {
-                if (element == 1) //if element == 1 it means that this node is used in this route
+                if (element == 1) //if element == 1 it means that this link is used in this route
                     result.Add(counter);
                 counter++;
             }

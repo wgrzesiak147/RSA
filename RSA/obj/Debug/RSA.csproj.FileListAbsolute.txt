@@ -12,3 +12,5 @@ E:\Studia\Goścień\C#\RSA-master\RSA\obj\Debug\RSA.pdb
 E:\Studia\Goścień\C#\RSA-master\RSA\obj\Debug\RSA.csprojResolveAssemblyReference.cache
 E:\Studia\Goścień\C#\RSA-master\RSA\bin\Debug\RSA.exe
 E:\Studia\Goścień\C#\RSA-master\RSA\bin\Debug\RSA.pdb
+D:\maciek\Magister\semestr 2\c#\RSA\RSA\bin\Debug\RSA.exe.config
+D:\maciek\Magister\semestr 2\c#\RSA\RSA\obj\Debug\RSA.pdb
