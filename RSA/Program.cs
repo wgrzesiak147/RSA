@@ -10,14 +10,10 @@ namespace RSA
 
             ////  string sTopologyFile =
             // @"C:\Users\wgrzesiak147\Downloads\RSA_any_uni_dane\RSA any uni dane\DT14 1.75 Tbps\dd.net";
-            string sTopologyFile =directoryPath + 
-             @"Dane\dd.net";
-            string sRoutesFile =
-                @"Dane\d.PAT";
-            string sSlotsFile =
-                @"Dane\d1.spec";
-            string sRequestFile =
-                @"Dane\51.dem";
+            string sTopologyFile =directoryPath +  @"Dane\dd.net";
+            string sRoutesFile = @"Dane\d.PAT";
+            string sSlotsFile = @"Dane\d1.spec";
+            string sRequestFile = @"Dane\51.dem";
 
             TopologyManager top = new TopologyManager();
             top.LoadTopology(sTopologyFile);
@@ -29,10 +25,6 @@ namespace RSA
       
             RequestManager req = new RequestManager();
             req.LoadRequests(sRequestFile);
-
-
-
-
         }
     }
 }

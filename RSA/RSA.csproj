@@ -43,14 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Connection.cs" />
+    <Compile Include="Entities\Link.cs" />
+    <Compile Include="Entities\Node.cs" />
     <Compile Include="Entities\Route.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\Request.cs" />
     <Compile Include="RequestManager.cs" />
-    <Compile Include="Entities\RoutesBetweenNodesPair.cs" />
+    <Compile Include="Entities\NodeRoutingTable.cs" />
     <Compile Include="RoutesManager.cs" />
     <Compile Include="Entities\Topology.cs" />
     <Compile Include="TopologyManager.cs" />

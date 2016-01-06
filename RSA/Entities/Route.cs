@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace RSA.Entities
 {
@@ -11,17 +7,19 @@ namespace RSA.Entities
     /// </summary>
     public class Route{
 
-        public int Id { get; set; }
+        public int Index { get; set; }
         public List<int> NodeList { get; set; }
         public int[] SlotsList { get; set; }
         public int StartNode { get; set; }
         public int EndNode { get; set; }
+        public int Distance { get; set; } = -1;
 
         public List<Route> ChildsRoutes = new List<Route>();
         public List<Route> ParentsRoutes = new List<Route>();
         
 
-        public Route(List<int> nodeList,int startNode,int endNode){
+        public Route(int index, List<int> nodeList,int startNode,int endNode) {
+            Index = index;
             NodeList = nodeList;
             StartNode = startNode;
             EndNode = endNode;

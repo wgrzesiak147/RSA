@@ -19,8 +19,7 @@ namespace RSA
        public bool LoadRequests(string path) {
             int counter = 0;
             string line;
-            try
-            {
+            try {
                 // Read the file and display it line by line.
                 using (StreamReader file = new StreamReader(path)) {
                     while ((line = file.ReadLine()) != null) {

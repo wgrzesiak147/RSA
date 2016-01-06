@@ -9,7 +9,7 @@ namespace RSA
     public class TopologyManager {
 
         public Topology CurrentTopology = new Topology();
-        public List<Connection> CurrentConnections = new List<Connection>(); 
+        public List<Link> CurrentConnections = new List<Link>(); 
 
         /// <summary>
         /// Load Topology from file
@@ -69,7 +69,7 @@ namespace RSA
             {
                 for (int y = 0; y < size; y ++)
                 {
-                    CurrentConnections.Add(new Connection(counter,x,y,CurrentTopology.CurrentTopology[x][y])); //adding new connection
+                    CurrentConnections.Add(new Link(counter,x,y,CurrentTopology.CurrentTopology[x][y])); //adding new connection
                     counter ++;
                 }
 

@@ -6,3 +6,9 @@ C:\GIT\rsa\RSA\RSA\obj\Debug\RSA.exe
 C:\GIT\rsa\RSA\RSA\obj\Debug\RSA.pdb
 D:\maciek\Magister\semestr 2\PSK\Nowy folder\RSA\RSA\bin\Debug\RSA.exe.config
 D:\maciek\Magister\semestr 2\PSK\Nowy folder\RSA\RSA\obj\Debug\RSA.pdb
+E:\Studia\Goścień\C#\RSA-master\RSA\bin\Debug\RSA.exe.config
+E:\Studia\Goścień\C#\RSA-master\RSA\obj\Debug\RSA.exe
+E:\Studia\Goścień\C#\RSA-master\RSA\obj\Debug\RSA.pdb
+E:\Studia\Goścień\C#\RSA-master\RSA\obj\Debug\RSA.csprojResolveAssemblyReference.cache
+E:\Studia\Goścień\C#\RSA-master\RSA\bin\Debug\RSA.exe
+E:\Studia\Goścień\C#\RSA-master\RSA\bin\Debug\RSA.pdb
