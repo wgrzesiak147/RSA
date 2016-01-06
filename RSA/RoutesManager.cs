@@ -9,7 +9,8 @@ namespace RSA {
     public class RoutesManager {
         public static int RoutesCount { get; set; } = 0;
         public int RoutesQuantity;
-       
+        public List<Route> allRoutes = new List<Route>();
+
         /// <summary>
         /// Loading routes from file and calculating parents and childs 
         /// </summary>
@@ -17,56 +18,22 @@ namespace RSA {
         /// <returns></returns>
         public bool LoadRoutes(string path) {
             try {
+                #region Route loading snippet
                 // Read the file and display it line by line.
                 using (StreamReader file = new StreamReader(path)) {
                     int lineCounter = 0;
                     int startNodeNumber = 0;
                     int endNodeNumber = 1;
                     string line;
-                    List<Route> allRoutes = new List<Route>();
-                    #region Old routes loading - should be deleted, but left as of now for you to compare with new loading method
-                    //while ((line = file.ReadLine()) != null) {
-                    //    if (counter == 0) {
-                    //        Int32.TryParse(line, out RoutesQuantity);
-                    //    }
-                    //    else {
-                    //        List<int> coll = line.Split(' ').Select(Int32.Parse).ToList();
-                    //        Route currentRoute = CalculateRouteFromBinary(coll, startNodeNumber, endNodeNumber);
-                    //        var routesForNodes = GetRoutesBetweenNodes(startNodeNumber, endNodeNumber);
-                    //        if (routesForNodes == null) {
-                    //            RoutesBetweenNodesPairsCollection.Add(new NodeRoutingTable(startNodeNumber,
-                    //                endNodeNumber,
-                    //                new List<Route>()));
-                    //            routesForNodes = GetRoutesBetweenNodes(startNodeNumber, endNodeNumber);
-                    //        }
-                    //        InitializeChildOrParents(currentRoute);
-                    //        routesForNodes?.RoutesCollection.Add(currentRoute);
-                    //    }
-                    //    counter++;
-
-                    //    if (counter == 31) {
-                    //        //every 30 lines (31 because the first row is size)
-                    //        counter = 1; //restarting counter
-                    //        endNodeNumber++; //increasing endNode
-                    //        if (endNodeNumber == 31) {
-                    //            //When endNode will be equal to 30
-                    //            startNodeNumber++; //increasing startNode
-                    //            endNodeNumber = 0; //restarting endNode
-                    //        }
-                    //        if (startNodeNumber == endNodeNumber) //When startNode equal to endNode
-                    //            endNodeNumber++; //increasing endNode
-                    //    }
-                    //} 
-                    #endregion
-
                     while ((line = file.ReadLine()) != null) {
-                        if (lineCounter == 0) { Int32.TryParse(line, out RoutesQuantity); lineCounter++; } else {
+                        if (lineCounter == 0) { Int32.TryParse(line, out RoutesQuantity); lineCounter++; }
+                        else {
                             List<int> _line = line.Split(' ').Select(Int32.Parse).ToList();
                             if (startNodeNumber == endNodeNumber) { endNodeNumber++; }
                             Route currRoute = CalculateRouteFromBinary(_line, startNodeNumber, endNodeNumber);
                             //Incrementing index for route
                             if (currRoute != null) {
-                                RoutesCount ++;
+                                RoutesCount++;
                                 allRoutes.Add(currRoute);
                             }
                             #region Uncoment for simple checkup of line reading ;)
@@ -75,41 +42,43 @@ namespace RSA {
                             //    i = 1 + 2;
                             //} 
                             #endregion
-                            if (lineCounter%30 == 0) { endNodeNumber++; }
-                            if (lineCounter%390 == 0) { startNodeNumber++; endNodeNumber = 0; }
+                            if (lineCounter % 30 == 0) { endNodeNumber++; }
+                            if (lineCounter % 390 == 0) { startNodeNumber++; endNodeNumber = 0; }
                             lineCounter++;
                         }
-                    } // All routes are loaded - We need now to add these routes to a structure we want to
-                    
-                    #region Uncomment to see that every start node has the same number of routes - 390; Or we can just implement proper routing table read here :) - TODO
-                    //foreach (var routeGroup in allRoutes.GroupBy(_startNodeIndex => _startNodeIndex.StartNode)
-                    //                                     .Select(group => new {
-                    //                                         StartNode = group.Key,
-                    //                                         Count = group.Count()
-                    //                                     }).OrderBy(x => x.StartNode)) {
-                    //    Console.WriteLine("StartNode {0} has {1} routes", routeGroup.StartNode, routeGroup.Count);
-                    //} 
-                    #endregion
-                    //This is MUCH faster than loading with method used before...
-                    if (allRoutes.Count > 0) {
-                        for(int startNode = 0; startNode < 14; startNode ++) {
+                    } // All routes are loaded - We need now to add these routes to a structure we want to 
+                }
+                #endregion
+
+                #region Uncomment to see that every start node has the same number of routes - 390; Or we can just implement proper routing table read here :) - TODO
+                //foreach (var routeGroup in allRoutes.GroupBy(_startNodeIndex => _startNodeIndex.StartNode)
+                //                                     .Select(group => new {
+                //                                         StartNode = group.Key,
+                //                                         Count = group.Count()
+                //                                     }).OrderBy(x => x.StartNode)) {
+                //    Console.WriteLine("StartNode {0} has {1} routes", routeGroup.StartNode, routeGroup.Count);
+                //} 
+                #endregion
+                //This is MUCH faster than loading with method used before...
+                #region Loading routes to NodeRoutingTable structures to be later used from its static RoutingTable list
+                if (allRoutes.Count > 0) {
+                        for (int startNode = 0; startNode < 14; startNode++) {
                             for (int endNode = 0; endNode < 14; endNode++) {
                                 if (startNode == endNode) { endNode++; }
                                 // Now we can use Linq to find routes for proper NodeRoutingTable feed
                                 List<Route> nodeRoutes = allRoutes.FindAll(x => x.StartNode == startNode && x.EndNode == endNode);
                                 if (nodeRoutes.Count > 0) {
                                     NodeRoutingTable newNodeRoutingTable = new NodeRoutingTable(startNode, endNode, nodeRoutes);
-                                    //newNodeRoutingTable.PrintObjToConsole();
+                                    newNodeRoutingTable.PrintObjToConsole();
                                 }
                             }
                         }
-                    } // Phew - that was painful, sorry...
-                }
+                    } // Phew - that was painful, sorry... 
+                    #endregion
                 return true;
             }
             catch (Exception ex) {
                 return false;
-                
             }
         }
 

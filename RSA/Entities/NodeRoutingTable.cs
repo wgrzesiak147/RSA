@@ -29,7 +29,7 @@ namespace RSA
 
         public int StartNodeNumber;
         public int EndNodeNumber;
-        public Dictionary<int, List<Route>> RoutesToNode; 
+        public Dictionary<int, List<Route>> AvailableNodeRoutes; 
         public List<Route> RoutesCollection;
 
         public NodeRoutingTable(int startNodeIndex, int endNodeIndex, List<Route> routesCollection){
@@ -40,15 +40,28 @@ namespace RSA
             RoutingTable.Add(this);
         }
 
-        public NodeRoutingTable(int nodeIndex) {
+        public NodeRoutingTable(int startNodeIndex) {
             if (RoutingTable.Count > 0) {
+                RoutesCollection = null;
+                StartNodeNumber = startNodeIndex;
+                EndNodeNumber = -1; // We can't lookup for single endnode now - our dictionary have all list of them :)
                 // We need only those objects that are matching our node index - we don't need other ones
-                List<NodeRoutingTable> tmp = new List<NodeRoutingTable>(from route in RoutingTable
-                                                                        where route.StartNodeNumber == nodeIndex
-                                                                        select route);
+                List<NodeRoutingTable> tmp = new List<NodeRoutingTable>(
+                    from route in RoutingTable
+                    where route.StartNodeNumber == startNodeIndex
+                    select route);
                 // Now we need to return NodeRoutingTable object WITH all those routes in some nice way
-                // TODO
-            }
+                this.AvailableNodeRoutes = new Dictionary<int, List<Route>>();
+                foreach (var nodeRouting in tmp) {
+                    if (!this.AvailableNodeRoutes.ContainsKey(nodeRouting.EndNodeNumber)) {
+                        this.AvailableNodeRoutes.Add(nodeRouting.EndNodeNumber, nodeRouting.RoutesCollection);
+                    } else {
+                        for (int i = 0; i < nodeRouting.RoutesCollection.Count; i++) {
+                            this.AvailableNodeRoutes[nodeRouting.EndNodeNumber].Add(nodeRouting.RoutesCollection[i]);
+                        }
+                    }
+                }
+            } else { throw new AccessViolationException("Routing table has not yet been initialized"); }
         }
 
         public void PrintObjToConsole() {
