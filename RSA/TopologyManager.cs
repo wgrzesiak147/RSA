@@ -49,7 +49,7 @@ namespace RSA
                         counter++;
                     }
                 }
-                LoadConnections();
+                LoadLinks();
                 return true;
             }
             catch (Exception ex) {
@@ -61,7 +61,7 @@ namespace RSA
         /// <summary>
         /// Initializing list of connections
         /// </summary>
-        private void LoadConnections(){
+        private void LoadLinks(){
             int counter = 0;
             int size = CurrentTopology.Size;
      
@@ -84,7 +84,7 @@ namespace RSA
         /// <param name="size"></param>
         private void InitializeTopology(int size){
             CurrentTopology.CurrentTopology = new int[size][];
-
+            CurrentTopology.Size = size;
             for (int i = 0; i < size; i++) {
                 CurrentTopology.CurrentTopology[i] = new int[size];
             }

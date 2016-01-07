@@ -10,6 +10,11 @@ namespace RSA {
         public static int RoutesCount { get; set; } = 0;
         public int RoutesQuantity;
         public List<Route> allRoutes = new List<Route>();
+        private List<Link> _currentConnections = new List<Link>();
+
+        public RoutesManager(List<Link> connections ){
+            _currentConnections = connections;
+        }
 
         /// <summary>
         /// Loading routes from file and calculating parents and childs 
@@ -31,6 +36,7 @@ namespace RSA {
                             List<int> _line = line.Split(' ').Select(Int32.Parse).ToList();
                             if (startNodeNumber == endNodeNumber) { endNodeNumber++; }
                             Route currRoute = CalculateRouteFromBinary(_line, startNodeNumber, endNodeNumber);
+                            CalculateDistance(currRoute);
                             //Incrementing index for route
                             if (currRoute != null) {
                                 RoutesCount++;
@@ -82,6 +88,17 @@ namespace RSA {
             }
         }
 
+        private void CalculateDistance(Route currRoute){
+            int distance = 0;
+            List<int> nodeList = currRoute.LinkList;
+            for (int i = 1; i < nodeList.Count; i++){
+                Link currentLink = _currentConnections.FirstOrDefault(
+                        x => x.StartNode == nodeList.ElementAt(i - 1) && x.EndNode == nodeList.ElementAt(i));
+                if (currentLink != null) distance += currentLink.Distance;
+            }
+            currRoute.Distance = distance;
+        }
+
         /// <summary>
         /// Initializing childs and parents for any existing routes in routesCollection. It can take a while!
         /// </summary>
@@ -97,6 +114,7 @@ namespace RSA {
                 List<Route> routeList = routesBetweenNodes.RoutesCollection;
                 foreach (var element in routeList) //for each route in each nodePair
                 {
+                    /*
                     if (element.NodeList.ContainsSubsequence(currentRoute.NodeList)) //checking if the route is a parent or child
                     {
                         currentRoute.ParentsRoutes.Add(element);
@@ -105,6 +123,8 @@ namespace RSA {
                         currentRoute.ChildsRoutes.Add(element);
                         element.ParentsRoutes.Add(currentRoute);
                     }
+                    */
+                    
                 }
             }
         }

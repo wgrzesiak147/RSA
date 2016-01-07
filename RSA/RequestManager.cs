@@ -30,23 +30,19 @@ namespace RSA
                             Request req = GetRequestFromRow(line);
                             CurrentRequestList.Add(req);
                         }
-                       
-                        counter++;
+                       counter++;
                     }
                 }
-               
-                return true;
+               return true;
             }
             catch (Exception ex) {
                 return false;
-               
-            }
+               }
             
         }
 
        private Request GetRequestFromRow(string line){
-
-           int startNode =  Int32.Parse(line.Substring(0, 3).Trim());
+            int startNode =  Int32.Parse(line.Substring(0, 3).Trim());
            int endNode = Int32.Parse(line.Substring(2, 3).Trim());
            int capacity = Int32.Parse(line.Substring(5).Trim()); 
            Request result = new Request(startNode,endNode,capacity);

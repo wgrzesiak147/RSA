@@ -17,9 +17,9 @@ namespace RSA
 
             TopologyManager top = new TopologyManager();
             top.LoadTopology(sTopologyFile);
-
+            
             // LoadRoutes method have to be executed before LoadSlots method!
-            RoutesManager man = new RoutesManager();
+            RoutesManager man = new RoutesManager(top.CurrentConnections);
             man.LoadRoutes(sRoutesFile);
             man.LoadSlots(sSlotsFile);
       
