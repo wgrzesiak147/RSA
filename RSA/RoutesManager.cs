@@ -114,17 +114,14 @@ namespace RSA {
                 List<Route> routeList = routesBetweenNodes.RoutesCollection;
                 foreach (var element in routeList) //for each route in each nodePair
                 {
-                    /*
-                    if (element.NodeList.ContainsSubsequence(currentRoute.NodeList)) //checking if the route is a parent or child
+                    if (element.LinkList.ContainsSubsequence(currentRoute.LinkList)) //checking if the route is a parent or child
                     {
                         currentRoute.ParentsRoutes.Add(element);
                         element.ChildsRoutes.Add(currentRoute);
-                    } else if (currentRoute.NodeList.ContainsSubsequence(element.NodeList)) {
+                    } else if (currentRoute.LinkList.ContainsSubsequence(element.LinkList)) {
                         currentRoute.ChildsRoutes.Add(element);
                         element.ParentsRoutes.Add(currentRoute);
                     }
-                    */
-                    
                 }
             }
         }

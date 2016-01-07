@@ -16,6 +16,10 @@
             StartNode = startNode;
             EndNode = endNode;
             Distance = distance;
+            
         }
+
+        
+    
     }
 }
