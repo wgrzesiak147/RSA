@@ -23,7 +23,6 @@ namespace RSA
                 // Read the file and display it line by line.
                 using (StreamReader file = new StreamReader(path))
                 {
-
                     while ((line = file.ReadLine()) != null)
                     {
                         if (counter == 0)
@@ -54,8 +53,7 @@ namespace RSA
             }
             catch (Exception ex) {
                 return false; // If there will be any error catched the method will return false. It will allow to check if its properly loaded or no
-               
-            }
+           }
         }
 
         /// <summary>
@@ -64,7 +62,6 @@ namespace RSA
         private void LoadLinks(){
             int counter = 0;
             int size = CurrentTopology.Size;
-     
             for (int x = 0; x < size; x ++)
             {
                 for (int y = 0; y < size; y ++)
@@ -72,10 +69,7 @@ namespace RSA
                     CurrentConnections.Add(new Link(counter,x,y,CurrentTopology.CurrentTopology[x][y])); //adding new connection
                     counter ++;
                 }
-
             }
-
-
         }
 
         /// <summary>
@@ -89,6 +83,5 @@ namespace RSA
                 CurrentTopology.CurrentTopology[i] = new int[size];
             }
         }
-
     }
 }

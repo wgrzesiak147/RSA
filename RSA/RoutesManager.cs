@@ -9,9 +9,14 @@ namespace RSA {
     public class RoutesManager {
         public static int RoutesCount { get; set; } = 0;
         public int RoutesQuantity;
-        public List<Route> allRoutes = new List<Route>();
+        public List<Route> AllRoutes = new List<Route>();
         private List<Link> _currentConnections = new List<Link>();
 
+
+        /// <summary>
+        /// Constructor that loads list of connections from TopologyManager
+        /// </summary>
+        /// <param name="connections"></param>
         public RoutesManager(List<Link> connections ){
             _currentConnections = connections;
         }
@@ -40,7 +45,7 @@ namespace RSA {
                             //Incrementing index for route
                             if (currRoute != null) {
                                 RoutesCount++;
-                                allRoutes.Add(currRoute);
+                                AllRoutes.Add(currRoute);
                             }
                             #region Uncoment for simple checkup of line reading ;)
                             //if (lineCounter%390 == 0) {
@@ -57,7 +62,7 @@ namespace RSA {
                 #endregion
 
                 #region Uncomment to see that every start node has the same number of routes - 390; Or we can just implement proper routing table read here :) - TODO
-                //foreach (var routeGroup in allRoutes.GroupBy(_startNodeIndex => _startNodeIndex.StartNode)
+                //foreach (var routeGroup in AllRoutes.GroupBy(_startNodeIndex => _startNodeIndex.StartNode)
                 //                                     .Select(group => new {
                 //                                         StartNode = group.Key,
                 //                                         Count = group.Count()
@@ -67,12 +72,12 @@ namespace RSA {
                 #endregion
                 //This is MUCH faster than loading with method used before...
                 #region Loading routes to NodeRoutingTable structures to be later used from its static RoutingTable list
-                if (allRoutes.Count > 0) {
+                if (AllRoutes.Count > 0) {
                         for (int startNode = 0; startNode < 14; startNode++) {
                             for (int endNode = 0; endNode < 14; endNode++) {
                                 if (startNode == endNode) { endNode++; }
                                 // Now we can use Linq to find routes for proper NodeRoutingTable feed
-                                List<Route> nodeRoutes = allRoutes.FindAll(x => x.StartNode == startNode && x.EndNode == endNode);
+                                List<Route> nodeRoutes = AllRoutes.FindAll(x => x.StartNode == startNode && x.EndNode == endNode);
                                 if (nodeRoutes.Count > 0) {
                                     NodeRoutingTable newNodeRoutingTable = new NodeRoutingTable(startNode, endNode, nodeRoutes);
                                     newNodeRoutingTable.PrintObjToConsole();
@@ -87,13 +92,16 @@ namespace RSA {
                 return false;
             }
         }
-
+        /// <summary>
+        /// Calculating distance for specified route
+        /// </summary>
+        /// <param name="currRoute"></param>
         private void CalculateDistance(Route currRoute){
             int distance = 0;
-            List<int> nodeList = currRoute.LinkList;
-            for (int i = 1; i < nodeList.Count; i++){
-                Link currentLink = _currentConnections.FirstOrDefault(
-                        x => x.StartNode == nodeList.ElementAt(i - 1) && x.EndNode == nodeList.ElementAt(i));
+            List<int> linkList = currRoute.LinkList; //we take list of link
+            for (int i = 0; i < linkList.Count; i++){ //for each link in route
+                Link currentLink = _currentConnections.FirstOrDefault( //we look for link from _currentConnection list (from TopologyManager) with index specified in linkList of route
+                    x => x.Index == linkList.ElementAt(i));
                 if (currentLink != null) distance += currentLink.Distance;
             }
             currRoute.Distance = distance;
@@ -122,6 +130,8 @@ namespace RSA {
                         currentRoute.ChildsRoutes.Add(element);
                         element.ParentsRoutes.Add(currentRoute);
                     }
+                   
+                    
                 }
             }
         }
