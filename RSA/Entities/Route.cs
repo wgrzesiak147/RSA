@@ -9,6 +9,9 @@ namespace RSA.Entities
 
         public int Index { get; set; }
         public List<int> LinkList { get; set; }
+        // Channel list is given in prestep - it is the same for ALL routes - that means new channels can't be added. Internal channel lists
+        // do differ between different routes if they don't intersect.
+        public List<Channel> channelList { get; } 
         public int[] SlotsList { get; set; }
         public int StartNode { get; set; }
         public int EndNode { get; set; }
